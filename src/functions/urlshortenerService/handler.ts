@@ -3,6 +3,7 @@ import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
 
 import schema from './schema';
+import sendMail from "../sendMailService";
 
 /**
  * endpoint for the shortening of the urls
@@ -15,9 +16,17 @@ const getShortenedUrls: ValidatedEventAPIGatewayProxyEvent<typeof schema> = asyn
   if(email != null && email.length > 0) { //checks if urls and email exists
     //TODO: add filters to remove bad characters and check if the "email" is a real email
 
-    return formatJSONResponse(200,{
-      message: `Success! the shortened urls of ${urls.toString()} will be sent to ${email}`,
-    });
+    const body = {
+      longUrls: urls,
+      shortenedUrls: [""],
+      mail: email
+    }
+
+    if(sendMail({body})){
+      return formatJSONResponse(200,{
+        message: `Success! the shortened urls of ${urls.toString()} will be sent to ${email}`,
+      });
+    }
   }
 
     return formatJSONResponse(500, {

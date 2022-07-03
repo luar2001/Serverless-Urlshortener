@@ -31,6 +31,8 @@ export default class UrlService {
         return url.Item as Url;
     }
 
+    //TODO: add getUrlsByMail
+
 }
 
 

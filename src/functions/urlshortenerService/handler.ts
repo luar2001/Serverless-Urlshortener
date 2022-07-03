@@ -18,7 +18,7 @@ const getShortenedUrls: ValidatedEventAPIGatewayProxyEvent<typeof schema> = asyn
 
     const body = {
       longUrls: urls,
-      shortenedUrls: [""],
+      shortenedUrls: [""], //TODO: add call to urlshortener!
       mail: email
     }
 
@@ -29,7 +29,7 @@ const getShortenedUrls: ValidatedEventAPIGatewayProxyEvent<typeof schema> = asyn
     }
   }
 
-    return formatJSONResponse(500, {
+    return formatJSONResponse(500, { //TODO: add more clear error responses
       message: `Failure! the shortened urls will not be sent! please try again!`,
     });
 };

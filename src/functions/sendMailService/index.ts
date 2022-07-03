@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {SENDER_MAIL,SENDGRID_URL,SENDGRID_AUTHORIZATION} from "@libs/envFIlesSubstitute"; //Todo: Add an env plugin.
+import {SENDER_MAIL,SENDGRID_URL,SENDGRID_AUTHORIZATION} from "@libs/envFilesSubstitute"; //Todo: Add an env plugin.
 
 const sendMail= (event) => {
 

@@ -10,3 +10,10 @@ export const formatJSONResponse = (statusCode:number,response: Record<string, un
     body: JSON.stringify(response)
   }
 }
+
+export const formatJSONRedirect = (statusCode:number, headers: any) => {
+  return {
+    statusCode: statusCode,
+    headers,
+  }
+}

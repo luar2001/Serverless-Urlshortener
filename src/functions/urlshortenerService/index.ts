@@ -9,6 +9,7 @@ export default {
         method: 'post',
         path: 'getShortenedUrls',
         cors: true,
+        private:true,
         request: {
           schemas: {
             'application/json': schema,

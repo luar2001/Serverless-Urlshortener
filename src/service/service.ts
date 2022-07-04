@@ -3,32 +3,36 @@ import Url from "../model/urlModel";
 
 export default class UrlService {
 
-    private tableName: string = "";
+    private tableName: string = "UrlShortenerTable";
 
     constructor(private docClient:DocumentClient) {}
 
     async createUrl(url:Url): Promise<Url> {
-
+        try{
         await this.docClient.put({
             TableName: this.tableName,
             Item: url
         }).promise()
-        return url as Url
+            console.log("Created Url: " + url)
+            return url as Url;
+        } catch (e){
+            throw new Error("could not save url to the database " + e)
+        }
     }
 
 
     async getByShortenedUrl(shortenedUrl : String ) : Promise<any> {
-
-        const url = await this.docClient.get({
-            TableName: this.tableName,
-            Key: {
-                shortenedUrl: shortenedUrl
-            }
-        }).promise()
-        if(!url.Item){
-            throw new Error("shortenedUrl does not exist!");
+        try{
+            const url = await this.docClient.get({
+                TableName: this.tableName,
+                Key: {
+                    shortenedUrl
+                }
+            }).promise()
+            return url.Item;
+        } catch (e) {
+            throw new Error("could not get the url form the database " + e)
         }
-        return url.Item as Url;
     }
 
     //TODO: add getUrlsByMail

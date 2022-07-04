@@ -1,6 +1,7 @@
 import type { AWS } from '@serverless/typescript';
 
 import urlshortenerService from '@functions/urlshortenerService';
+import shortenedUrlOpener from '@functions/shortenedUrlOpener';
 
 const serverlessConfiguration: AWS = {
   service: 'urlshortener',
@@ -21,6 +22,7 @@ const serverlessConfiguration: AWS = {
       role: {
         statements: [{
           Effect: "Allow",
+
           Action: [
             "dynamodb:DescribeTable",
             "dynamodb:Query",
@@ -29,13 +31,13 @@ const serverlessConfiguration: AWS = {
             "dynamodb:PutItem",
             "dynamodb:UpdateItem",
           ],
-          Resource: "arn:aws:dynamodb:eu-west-1:*:table/UrlShortenerTable",
+          Resource: "arn:aws:dynamodb:us-east-1:*:*",
         }],
       },
     },
   },
   // import the function via paths
-  functions: {urlshortenerService },
+  functions: {urlshortenerService, shortenedUrlOpener },
   package: { individually: true },
   custom: {
     esbuild: {
@@ -50,7 +52,7 @@ const serverlessConfiguration: AWS = {
     },
     dynamodb: {
       start: {
-        port: 4000,
+        port: 5000,
         inMemory: true,
         migrate: true,
       },
@@ -60,20 +62,20 @@ const serverlessConfiguration: AWS = {
   resources: {
     Resources: {
       TodosTable: {
-        Type: "AWS::DynamoDB::UrlShortenerTable",
+        Type: "AWS::DynamoDB::Table",
         Properties: {
           TableName: "UrlShortenerTable",
           AttributeDefinitions: [{
-            AttributeName: "id",
+            AttributeName: "shortenedUrl",
             AttributeType: "S",
           }],
           KeySchema: [{
-            AttributeName: "id",
+            AttributeName: "shortenedUrl",
             KeyType: "HASH"
           }],
           ProvisionedThroughput: {
             ReadCapacityUnits: 1,
-            WriteCapacityUnits: 1
+            WriteCapacityUnits: 1,
           },
 
         }

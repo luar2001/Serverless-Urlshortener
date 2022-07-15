@@ -26,12 +26,12 @@ const getShortenedUrls: ValidatedEventAPIGatewayProxyEvent<typeof schema> = asyn
     }
 
     if(await storeUrlsInDB(body)){
-      if(sendMail({body})){
-        return formatJSONResponse(200,{
-          message: `Success! the shortened urls of ${body.longUrls.toString()}, which are ${body.shortenedUrls.toString()} will be sent to ${body.mail}`,
-        });
-      }
+      sendMail({body})
+      return formatJSONResponse(200,{
+        message: `Success! the shortened urls of ${body.longUrls.toString()}, which are ${body.shortenedUrls.toString()} will be sent to ${body.mail}`,
+      });
     }
+
   }
     return formatJSONResponse(500, { //TODO: add more clear error responses
       message: `Failure! the shortened urls will not be sent! please try again!`,
